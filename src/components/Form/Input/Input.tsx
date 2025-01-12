@@ -1,9 +1,36 @@
-import { StyledInput } from "./Input.styled"
+import { UseFormRegister } from "react-hook-form";
+import { StyledError, StyledInput, StyledLabel } from "./Input.styled";
+import { TbAlertTriangle } from "react-icons/tb";
 
-const Input = () => {
+type InputProps = {
+  error: string | null;
+  type: string;
+  placeholder: string;
+  label: string;
+  register: UseFormRegister<any>;
+  id: string;
+};
+
+const Input: React.FC<InputProps> = ({
+  error,
+  placeholder,
+  label,
+  id,
+  register,
+}) => {
   return (
-    <StyledInput>Input</StyledInput>
-  )
-}
+    <div>
+      <StyledLabel error={error}>{label}</StyledLabel>
+      <StyledInput error={error} placeholder={placeholder} {...register(id)} />
 
-export default Input
+      {error && (
+        <StyledError>
+          <TbAlertTriangle />
+          {error}
+        </StyledError>
+      )}
+    </div>
+  );
+};
+
+export default Input;

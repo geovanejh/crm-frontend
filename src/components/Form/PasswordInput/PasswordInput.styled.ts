@@ -21,7 +21,7 @@ const getInputStyles = (error: InputProps["error"]) => {
   }
 };
 
-export const StyledInput = styled.input<InputProps>`
+export const StyledPasswordInput = styled.input<InputProps>`
   padding: 14px 16px;
   width: 100%;
   border: 1px solid #dcdcdc;
@@ -37,17 +37,13 @@ export const StyledInput = styled.input<InputProps>`
   ${(props) => getInputStyles(props.error)}
 `;
 
-export const StyledLabel = styled.label<InputProps>`
-  font-size: 14px;
-  color: #9fa2b4;
-  ${(props) => getInputStyles(props.error)}
-`;
-
-export const StyledError = styled.p`
-  color: rgb(255, 0, 0);
-  font-size: 14px;
-  margin-top: 4px;
+export const PasswordContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+
+  svg {
+    margin-left: -30px;
+    color: #7f7f7f;
+    cursor: pointer;
+  }
 `;
