@@ -82,11 +82,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(true);
       await api.post("/user", userData);
       navigate("/");
+      alert("User created successfully");
     } catch (error) {
       alert("An unexpected error occurred");
     }
     setLoading(false);
-    alert("User created successfully");
   };
 
   const logout = () => {
