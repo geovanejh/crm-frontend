@@ -39,7 +39,13 @@ export const StyledPasswordInput = styled.input<InputProps>`
 
 export const PasswordContainer = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+
+  > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
 
   svg {
     margin-left: -30px;

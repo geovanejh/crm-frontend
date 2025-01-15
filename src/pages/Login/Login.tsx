@@ -23,7 +23,7 @@ const Login: React.FC = () => {
 
   const schema = yup.object({
     email: yup.string().email().required(),
-    password: passwordSchema,
+    password: yup.string().required(),
   });
 
   const {
