@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import Loading from "../components/Loading/Loading";
+import axios from "axios";
 
 interface AuthContextType {
   isAuth: boolean;
@@ -30,15 +31,6 @@ const AuthContext = createContext<ProviderProps>({
   handleRegister: () => {},
 });
 
-export const randomAlphaNumeric = (length: number) => {
-  let s = "";
-  Array.from({ length }).some(() => {
-    s += Math.random().toString(36).slice(2);
-    return s.length >= length;
-  });
-  return s.slice(0, length);
-};
-
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
@@ -48,7 +40,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("effect");
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     if (token && user) {
@@ -62,6 +53,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setLoading(true);
       const { data } = await api.post("/login", userData);
+
+      if (!data.activated) {
+        alert("Confirm your email first");
+        setLoading(false);
+        return;
+      }
+
       api.defaults.headers.common["Authorization"] = data.token;
 
       setUser(userData.email);
@@ -84,7 +82,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       navigate("/");
       alert("User created successfully");
     } catch (error) {
-      alert("An unexpected error occurred");
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message || "Error creating user";
+        alert(errorMessage);
+      } else {
+        alert("An unexpected error occurred.");
+      }
     }
     setLoading(false);
   };

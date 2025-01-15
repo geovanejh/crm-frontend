@@ -2,7 +2,7 @@ import { useState } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { PasswordContainer, StyledPasswordInput } from "./PasswordInput.styled";
-import { StyledError } from "../Input/Input.styled";
+import { StyledError, StyledLabel } from "../Input/Input.styled";
 import { TbAlertTriangle } from "react-icons/tb";
 
 interface PasswordInputProps {
@@ -22,21 +22,24 @@ const PasswordInput = ({
   };
 
   return (
-    <div>
+    <>
       <PasswordContainer>
-        <StyledPasswordInput
-          error={error}
-          type={showPass ? "text" : "password"}
-          placeholder={placeholder}
-          {...register("password")}
-        />
-        <>
-          {showPass ? (
-            <FaEye onClick={() => handleShowPass()} />
-          ) : (
-            <FaEyeSlash onClick={() => handleShowPass()} />
-          )}
-        </>
+        <StyledLabel error={error}>Password</StyledLabel>
+        <div>
+          <StyledPasswordInput
+            error={error}
+            type={showPass ? "text" : "password"}
+            placeholder={placeholder}
+            {...register("password")}
+          />
+          <>
+            {showPass ? (
+              <FaEye onClick={() => handleShowPass()} />
+            ) : (
+              <FaEyeSlash onClick={() => handleShowPass()} />
+            )}
+          </>
+        </div>
       </PasswordContainer>
       {error && (
         <StyledError>
@@ -44,7 +47,7 @@ const PasswordInput = ({
           {error}
         </StyledError>
       )}
-    </div>
+    </>
   );
 };
 
