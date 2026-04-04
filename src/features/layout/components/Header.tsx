@@ -1,6 +1,14 @@
 import { Link, NavLink } from 'react-router'
+import { Button } from '@/shared/components/ui/Button'
+import { useAuthStore } from '@/features/auth/stores/authStore'
 
 export function Header() {
+  const { logout } = useAuthStore()
+
+  const handleLogout = (): void => {
+    logout()
+  }
+
   return (
     <header className="border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center justify-between px-6 py-4">
@@ -21,6 +29,9 @@ export function Header() {
           >
             Home
           </NavLink>
+          <Button variant="outline" size="sm" onClick={() => handleLogout()}>
+            Logout
+          </Button>
         </nav>
       </div>
     </header>

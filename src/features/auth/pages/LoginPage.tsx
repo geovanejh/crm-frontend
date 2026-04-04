@@ -1,23 +1,92 @@
-export const LoginPage = () => {
-  return (
-    <div className="flex flex-1 w-full items-center justify-center">
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from 'react-router'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card'
+import { Input } from '@/shared/components/ui/input'
+import { Label } from '@/shared/components/ui/label'
+import { Button } from '@/shared/components/ui/Button'
+import { useAuthStore } from '@/features/auth/stores/authStore'
+import { loginSchema, type LoginFormData } from '@/features/auth/schemas/login.schema'
 
-      <div className="flex justify-center w-full">
-        <h1>Welcome</h1>
-      </div>
-      <div className="flex justify-center w-full h-full">
-        <form className="flex flex-col justify-center">
-          <div>
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
+export const LoginPage = () => {
+  const navigate = useNavigate()
+  const { login, isLoading, error } = useAuthStore()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  })
+
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await login(data)
+      navigate('/')
+    } catch {
+      // error is already set in the store
+    }
+  }
+
+  return (
+    <div className="flex flex-1 items-center justify-center">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardDescription>
+            Enter your credentials to access your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="email@example.com"
+                aria-invalid={!!errors.email}
+                {...register('email')}
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                aria-invalid={!!errors.password}
+                {...register('password')}
+              />
+              {errors.password && (
+                <p className="text-sm text-destructive">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+            {error && (
+              <p className="text-sm text-destructive">{error}</p>
+            )}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Login'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }
