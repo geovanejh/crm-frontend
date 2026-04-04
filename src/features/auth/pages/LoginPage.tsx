@@ -13,10 +13,12 @@ import { Label } from '@/shared/components/ui/label'
 import { Button } from '@/shared/components/ui/Button'
 import { useAuthStore } from '@/features/auth/stores/authStore'
 import { loginSchema, type LoginFormData } from '@/features/auth/schemas/login.schema'
+import { useApiCall } from '@/shared/hooks/useApiCall'
 
 export const LoginPage = () => {
   const navigate = useNavigate()
-  const { login, isLoading, error } = useAuthStore()
+  const login = useAuthStore((state) => state.login)
+  const { execute, isLoading } = useApiCall(login)
 
   const {
     register,
@@ -27,11 +29,9 @@ export const LoginPage = () => {
   })
 
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      await login(data)
+    const result = await execute(data)
+    if (result) {
       navigate('/')
-    } catch {
-      // error is already set in the store
     }
   }
 
@@ -78,9 +78,6 @@ export const LoginPage = () => {
                 </p>
               )}
             </div>
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
