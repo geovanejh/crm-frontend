@@ -1,11 +1,9 @@
 import { createBrowserRouter } from 'react-router'
 import { RootLayout } from '@/features/layout/components/RootLayout'
-import { HomePage } from '@/features/home/pages/HomePage'
-import { NotFoundPage } from '@/shared/components/NotFoundPage'
 import { RouteErrorPage } from '@/shared/components/RouteErrorPage'
-import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { PrivateRoute } from '@/features/auth/components/PrivateRoute'
 import { PublicRoute } from '@/features/auth/components/PublicRoute'
+import { lazyRoute } from '@/shared/lib/lazyLoad'
 
 export const router = createBrowserRouter([
   {
@@ -15,20 +13,16 @@ export const router = createBrowserRouter([
       // Public routes (redirect to / if authenticated)
       {
         element: <PublicRoute />,
-        children: [
-          { path: '/login', element: <LoginPage /> },
-        ],
+        children: [{ path: '/login', lazy: lazyRoute(() => import('@/features/auth/pages/LoginPage'), 'LoginPage') }],
       },
 
       // Private routes (redirect to /login if not authenticated)
       {
         element: <PrivateRoute />,
-        children: [
-          { index: true, element: <HomePage /> },
-        ],
+        children: [{ index: true, lazy: lazyRoute(() => import('@/features/home/pages/HomePage'), 'HomePage') }],
       },
 
-      { path: '*', element: <NotFoundPage /> },
+      { path: '*', lazy: lazyRoute(() => import('@/shared/components/NotFoundPage'), 'NotFoundPage') },
     ],
   },
 ])
