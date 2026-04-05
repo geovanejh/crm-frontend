@@ -10,7 +10,7 @@ import {
 } from '@/shared/components/ui/card'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
-import { Button } from '@/shared/components/ui/Button'
+import { Button } from '@/shared/components/ui/button'
 import { useAuthStore } from '@/features/auth/stores/authStore'
 import { loginSchema, type LoginFormData } from '@/features/auth/schemas/login.schema'
 import { useApiCall } from '@/shared/hooks/useApiCall'

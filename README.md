@@ -35,7 +35,7 @@ npm run dev
 src/
 ├── app/                          App shell (entry point, router, global CSS)
 │   ├── main.tsx                  Application entry point
-│   ├── router.tsx                Route definitions
+│   ├── router.tsx                Route definitions (nested layouts)
 │   └── index.css                 Tailwind + shadcn/ui theme
 ├── features/                     Domain-specific modules
 │   ├── auth/                     Authentication (login, route guards)
@@ -45,15 +45,15 @@ src/
 │   │   ├── services/             API service (authService)
 │   │   ├── stores/               Auth state (authStore)
 │   │   └── types/                Request/Response DTOs
-│   ├── counter/stores/           Counter Zustand store
 │   ├── home/pages/               Home page + tests
-│   ├── layout/components/        RootLayout, Header, Footer
+│   ├── layout/components/        RootLayout, AuthenticatedLayout, Header, Footer
+│   │   └── Sidebar/              Sidebar components (AppSidebar, nav-main, nav-user, etc.)
 │   └── user/                     User services + types
 └── shared/                       Cross-feature shared code
-    ├── components/               ErrorBoundary, NotFoundPage
-    │   └── ui/                   shadcn/ui components (Button, Card, Input, Label)
+    ├── components/               ErrorBoundary, NotFoundPage, RouteErrorPage
+    │   └── ui/                   shadcn/ui components (Button, Card, Input, Sidebar, etc.)
     ├── hooks/                    Custom hooks (useLocalStorage)
-    ├── lib/                      httpClient, cn() utility
+    ├── lib/                      httpClient, lazyLoad, cn() utility
     ├── config/                   Type-safe env variable access
     └── test/                     Test setup + renderWithProviders
 ```
@@ -61,14 +61,19 @@ src/
 ## Architecture
 
 - **Feature-based organization** — code is grouped by domain, not by file type. Each feature owns its components, stores, services, types, and tests
-- **Routing**: React Router v7 with nested layouts (`RootLayout` → pages), configured in `src/app/router.tsx`
+- **Routing**: React Router v7 with nested layouts, lazy-loaded routes, configured in `src/app/router.tsx`
+- **Layouts**: Two-tier layout system:
+  - `RootLayout` — shell global (Footer, Toaster), usado por todas as rotas
+  - `AuthenticatedLayout` — layout com Sidebar e Header, usado apenas em rotas privadas
 - **Authentication**: JWT-based auth with `PrivateRoute`/`PublicRoute` guards. Token stored in localStorage, managed by Zustand
 - **State**: Zustand stores with devtools middleware, scoped to their feature — no providers needed
 - **API**: Typed `httpClient` wrapper over fetch in `src/shared/lib/`, service modules inside each feature
 - **Clean architecture**: `services/` (raw API) → `stores/` (state + data treatment) → `pages/` (presentation)
 - **Forms**: React Hook Form + Zod via `@hookform/resolvers` for type-safe form validation
 - **Validation**: Zod schemas for data validation at system boundaries
-- **Styling**: Tailwind CSS v4 + shadcn/ui components with CSS variables and dark mode support
+- **Styling**: Tailwind CSS v4 + shadcn/ui (base-nova style, Base UI) with CSS variables and dark mode support
+- **Sidebar**: shadcn/ui Sidebar with collapsible navigation, team switcher, and user menu. Only rendered in authenticated routes via `AuthenticatedLayout`
+- **Lazy loading**: Routes are lazy-loaded via `lazyRoute()` helper with `Suspense` + `Spinner` fallback
 - **Testing**: Vitest + React Testing Library with global test utilities in `src/shared/test/`
 
 ### Adding a New Feature
@@ -86,7 +91,20 @@ src/features/<feature-name>/
 └── __tests__/     Feature tests
 ```
 
-Then register routes in `src/app/router.tsx` under `PrivateRoute` (protected) or `PublicRoute` (guest-only).
+Then register routes in `src/app/router.tsx`:
+- **Protected routes**: add under `AuthenticatedLayout` children (renders with Sidebar + Header)
+- **Guest-only routes**: add under `PublicRoute` children (no Sidebar)
+
+### Route Hierarchy
+
+```
+RootLayout (Footer + Toaster)
+├── PublicRoute
+│   └── /login → LoginPage
+└── PrivateRoute
+    └── AuthenticatedLayout (SidebarProvider + Sidebar + Header)
+        └── / → HomePage
+```
 
 ### Adding shadcn/ui Components
 
@@ -95,6 +113,8 @@ npx shadcn@latest add <component>
 ```
 
 Components are installed into `src/shared/components/ui/` and can be customized directly.
+
+> **Important**: This project uses shadcn **base-nova** style (Base UI), not Radix. If you copy examples from the shadcn docs, replace `asChild` with the `render` prop. See `guia-shadcn-base-nova.md` for details.
 
 ## Conventions
 
