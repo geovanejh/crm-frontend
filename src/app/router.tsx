@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import { RootLayout } from '@/features/layout/components/RootLayout'
+import { AuthenticatedLayout } from '@/features/layout/components/AuthenticatedLayout'
 import { RouteErrorPage } from '@/shared/components/RouteErrorPage'
 import { PrivateRoute } from '@/features/auth/components/PrivateRoute'
 import { PublicRoute } from '@/features/auth/components/PublicRoute'
@@ -19,7 +20,12 @@ export const router = createBrowserRouter([
       // Private routes (redirect to /login if not authenticated)
       {
         element: <PrivateRoute />,
-        children: [{ index: true, lazy: lazyRoute(() => import('@/features/home/pages/HomePage'), 'HomePage') }],
+        children: [
+          {
+            element: <AuthenticatedLayout />,
+            children: [{ index: true, lazy: lazyRoute(() => import('@/features/home/pages/HomePage'), 'HomePage') }],
+          },
+        ],
       },
 
       { path: '*', lazy: lazyRoute(() => import('@/shared/components/NotFoundPage'), 'NotFoundPage') },

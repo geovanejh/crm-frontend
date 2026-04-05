@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Button } from '@/shared/components/ui/Button'
+import { Button } from '@/shared/components/ui/button'
 
 describe('Button', () => {
   it('renders children correctly', () => {
