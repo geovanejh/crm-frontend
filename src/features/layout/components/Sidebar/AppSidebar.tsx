@@ -1,64 +1,49 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import {
-  AudioWaveform,
-  Command,
-  GalleryVerticalEnd,
-  Bolt
-} from "lucide-react"
+import * as React from 'react'
+import { AudioWaveform, Command, GalleryVerticalEnd, Bolt } from 'lucide-react'
 
-import { NavMain } from "./nav-main"
-import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/shared/components/ui/sidebar"
+import { NavMain } from './nav-main'
+import { NavUser } from './nav-user'
+import { TeamSwitcher } from './team-switcher'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/shared/components/ui/sidebar'
 
 // This is sample data.
 const data = {
   user: {
-    name: "Geovane Hartmann",
-    email: "geovanehartmann@gmail.com"
+    name: 'Geovane Hartmann',
+    email: 'geovanehartmann@gmail.com',
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: 'Acme Inc',
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: 'Enterprise',
     },
     {
-      name: "Acme Corp.",
+      name: 'Acme Corp.',
       logo: AudioWaveform,
-      plan: "Startup",
+      plan: 'Startup',
     },
     {
-      name: "Evil Corp.",
+      name: 'Evil Corp.',
       logo: Command,
-      plan: "Free",
+      plan: 'Free',
     },
   ],
   navMain: [
     {
-      title: "Gerencial",
-      url: "#",
+      title: 'Clients',
+      url: '#',
       icon: Bolt,
       isActive: true,
       items: [
         {
-          title: "Funcionários",
-          url: "#",
-        },
-        {
-          title: "Setores",
-          url: "#",
+          title: 'Costumer',
+          url: '#',
         },
       ],
-    }
+    },
   ],
 }
 

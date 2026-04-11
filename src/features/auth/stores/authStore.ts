@@ -12,48 +12,66 @@ interface AuthState {
   error: string | null
   login: (data: LoginRequest) => Promise<void>
   logout: () => void
+  verifyEmail: (token: string) => Promise<void>
 }
 
-export const useAuthStore = create<AuthState>()(devtools((set) => ({
-  token: localStorage.getItem('token'),
-  email: localStorage.getItem('email'),
-  activated: localStorage.getItem('activated') === 'true',
-  isAuthenticated: !!localStorage.getItem('token'),
-  isLoading: false,
-  error: null,
-
-  login: async (data) => {
-    set({ isLoading: true, error: null })
-    try {
-      const response = await authService.login(data)
-      localStorage.setItem('token', response.token)
-      localStorage.setItem('email', response.email)
-      localStorage.setItem('activated', String(response.activated))
-      set({
-        token: response.token,
-        email: response.email,
-        activated: response.activated,
-        isAuthenticated: true,
-        isLoading: false,
-      })
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Login failed'
-      set({ error: message, isLoading: false })
-      throw err
-    }
-  },
-
-  logout: () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('email')
-    localStorage.removeItem('activated')
-    set({
-      token: null,
-      email: null,
-      activated: false,
-      isAuthenticated: false,
+export const useAuthStore = create<AuthState>()(
+  devtools(
+    (set) => ({
+      token: localStorage.getItem('token'),
+      email: localStorage.getItem('email'),
+      activated: localStorage.getItem('activated') === 'true',
+      isAuthenticated: !!localStorage.getItem('token'),
+      isLoading: false,
       error: null,
-    })
-  },
-}), { name: 'auth-store' }))
+
+      login: async (data) => {
+        set({ isLoading: true, error: null })
+        try {
+          const response = await authService.login(data)
+          localStorage.setItem('token', response.token)
+          localStorage.setItem('email', response.email)
+          localStorage.setItem('activated', String(response.activated))
+          set({
+            token: response.token,
+            email: response.email,
+            activated: response.activated,
+            isAuthenticated: true,
+            isLoading: false,
+          })
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Login failed'
+          set({ error: message, isLoading: false })
+          throw err
+        }
+      },
+
+      logout: () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('email')
+        localStorage.removeItem('activated')
+        set({
+          token: null,
+          email: null,
+          activated: false,
+          isAuthenticated: false,
+          error: null,
+        })
+      },
+
+      verifyEmail: async (token: string) => {
+        set({ isLoading: true, error: null })
+        try {
+          await authService.verifyEmail(token)
+          localStorage.setItem('activated', 'true')
+          set({ activated: true, isLoading: false })
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Email verification failed'
+          set({ error: message, isLoading: false })
+          throw err
+        }
+      },
+    }),
+    { name: 'auth-store' },
+  ),
+)
