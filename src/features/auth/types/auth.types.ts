@@ -8,3 +8,8 @@ export interface LoginResponse {
   email: string
   activated: boolean
 }
+
+export interface RegisterRequest {
+  email: string
+  password: string
+}

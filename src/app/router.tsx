@@ -14,7 +14,19 @@ export const router = createBrowserRouter([
       // Public routes (redirect to / if authenticated)
       {
         element: <PublicRoute />,
-        children: [{ path: '/login', lazy: lazyRoute(() => import('@/features/auth/pages/LoginPage'), 'LoginPage') }],
+        children: [
+          { path: '/login', lazy: lazyRoute(() => import('@/features/auth/pages/LoginPage'), 'LoginPage') },
+          { path: '/register', lazy: lazyRoute(() => import('@/features/auth/pages/RegisterPage'), 'RegisterPage') },
+          {
+            path: '/verify-email',
+            lazy: async () => {
+              const { mailVerificationLoader } = await import(
+                '@/features/auth/pages/mailVerificationLoader'
+              )
+              return { loader: mailVerificationLoader }
+            },
+          },
+        ],
       },
 
       // Private routes (redirect to /login if not authenticated)
