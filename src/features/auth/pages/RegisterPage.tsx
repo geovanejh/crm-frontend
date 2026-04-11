@@ -2,18 +2,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
-import { SignupForm } from '@/shared/components/signup-form'
+import { SignupForm } from '@/features/auth/components/signup-form'
 import { authService } from '@/features/auth/services/authService'
-import {
-  registerSchema,
-  type RegisterFormData,
-} from '@/features/auth/schemas/register.schema'
+import { registerSchema, type RegisterFormData } from '@/features/auth/schemas/register.schema'
 import { useApiCall } from '@/shared/hooks/useApiCall'
 
 export const RegisterPage = () => {
   const navigate = useNavigate()
   const { execute, isLoading } = useApiCall(
-    (data: { email: string; password: string }) => authService.register(data),
+    (data: { email: string; password: string; name: string; phone: string }) =>
+      authService.register(data),
   )
 
   const {
@@ -28,6 +26,8 @@ export const RegisterPage = () => {
     const result = await execute({
       email: data.email,
       password: data.password,
+      name: data.name,
+      phone: data.phone,
     })
     if (result) {
       toast.success('Account created! Please check your email to verify.')
