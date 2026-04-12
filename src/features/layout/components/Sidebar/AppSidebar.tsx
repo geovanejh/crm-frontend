@@ -40,7 +40,7 @@ const data = {
       items: [
         {
           title: 'Costumer',
-          url: '#',
+          url: '/Costumers',
         },
       ],
     },

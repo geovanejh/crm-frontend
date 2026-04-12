@@ -1,12 +1,8 @@
-"use client"
+'use client'
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronRight, type LucideIcon } from 'lucide-react'
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/shared/components/ui/collapsible"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shared/components/ui/collapsible'
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -16,7 +12,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/shared/components/ui/sidebar"
+} from '@/shared/components/ui/sidebar'
+import { Link } from 'react-router'
 
 export function NavMain({
   items,
@@ -38,15 +35,8 @@ export function NavMain({
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <Collapsible
-              defaultOpen={item.isActive}
-              className="group/collapsible"
-            >
-              <CollapsibleTrigger
-                render={
-                  <SidebarMenuButton tooltip={item.title} />
-                }
-              >
+            <Collapsible defaultOpen={item.isActive} className="group/collapsible">
+              <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title} />}>
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
@@ -55,7 +45,7 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton render={<a href={subItem.url} />}>
+                      <SidebarMenuSubButton render={<Link to={subItem.url} />} className="cursor-pointer">
                         <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

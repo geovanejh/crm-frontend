@@ -20,9 +20,7 @@ export const router = createBrowserRouter([
           {
             path: '/verify-email',
             lazy: async () => {
-              const { mailVerificationLoader } = await import(
-                '@/features/auth/pages/mailVerificationLoader'
-              )
+              const { mailVerificationLoader } = await import('@/features/auth/pages/mailVerificationLoader')
               return { loader: mailVerificationLoader }
             },
           },
@@ -35,7 +33,17 @@ export const router = createBrowserRouter([
         children: [
           {
             element: <AuthenticatedLayout />,
-            children: [{ index: true, lazy: lazyRoute(() => import('@/features/home/pages/HomePage'), 'HomePage') }],
+            children: [
+              { index: true, lazy: lazyRoute(() => import('@/features/home/pages/HomePage'), 'HomePage') },
+              {
+                path: '/costumers',
+                lazy: lazyRoute(() => import('@/features/costumers/pages/CostumersPage'), 'CostumersPage'),
+              },
+              {
+                path: '/costumers/new',
+                lazy: lazyRoute(() => import('@/features/costumers/pages/NewCostumer'), 'NewCostumer'),
+              },
+            ],
           },
         ],
       },
