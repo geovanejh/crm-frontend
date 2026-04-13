@@ -2,32 +2,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
 import { columns } from './column'
-import type { CostumerFormData } from '../../schemas/costumer.schema'
+import type { Costumer } from '../../types/costumer.types'
 
-export const CostumersTable = () => {
-  const data: CostumerFormData[] = [
-    {
-      name: 'Costumer 1',
-      document: '12345678900',
-      birthDate: '1990-01-01',
-      email: 'costumer1@email.com',
-      phone: '11999999999',
-    },
-    {
-      name: 'Costumer 2',
-      document: '12345678900',
-      birthDate: '1985-05-15',
-      email: 'costumer2@email.com',
-      phone: '11988888888',
-    },
-    {
-      name: 'Costumer 3',
-      document: '12345678900',
-      birthDate: '1992-12-20',
-      email: 'costumer3@email.com',
-      phone: '11977777777',
-    },
-  ]
+interface CostumersTableProps {
+  data: Costumer[]
+}
+
+export const CostumersTable = ({ data }: CostumersTableProps) => {
 
   // TanStack Table exposes non-memoizable functions and is intentionally excluded from React Compiler memoization.
   // eslint-disable-next-line react-hooks/incompatible-library

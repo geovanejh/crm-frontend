@@ -4,11 +4,11 @@ import { MultiStepsFormItem } from './HeaderItem'
 
 interface HeaderProps {
   currentStep: number
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>
+  onStepChange: (step: number) => void
   formSteps: { title: string; description: string; icon: LucideIcon }[]
 }
 
-export const Header = ({ currentStep, setCurrentStep, formSteps }: HeaderProps) => {
+export const Header = ({ currentStep, onStepChange, formSteps }: HeaderProps) => {
   return (
     <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3 xl:gap-0">
       {formSteps.map((step, index) => (
@@ -18,7 +18,7 @@ export const Header = ({ currentStep, setCurrentStep, formSteps }: HeaderProps) 
             description={step.description}
             isCurrentStep={currentStep === index + 1}
             step={index + 1}
-            setCurrentStep={setCurrentStep}
+            onStepChange={onStepChange}
             icon={step.icon}
           />
           {index < formSteps.length - 1 && <ChevronRight className="hidden xl:block text-gray-500" />}
