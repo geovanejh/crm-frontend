@@ -17,7 +17,7 @@ export const CostumersPage = () => {
           </Link>
         </Button>
       </div>
-      <CostumersTable />
+      <CostumersTable data={[]} />
     </div>
   )
 }
