@@ -15,6 +15,8 @@ export const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        submit:
+          "bg-green-600 text-white hover:bg-green-700 focus-visible:border-green-400 focus-visible:ring-green-600/20 dark:bg-green-700 dark:hover:bg-green-800 dark:focus-visible:ring-green-600/40",
       },
       size: {
         default:
