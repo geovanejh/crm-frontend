@@ -9,14 +9,23 @@ export const CostumersTable = () => {
     {
       name: 'Costumer 1',
       document: '12345678900',
+      birthDate: '1990-01-01',
+      email: 'costumer1@email.com',
+      phone: '11999999999',
     },
     {
       name: 'Costumer 2',
       document: '12345678900',
+      birthDate: '1985-05-15',
+      email: 'costumer2@email.com',
+      phone: '11988888888',
     },
     {
       name: 'Costumer 3',
       document: '12345678900',
+      birthDate: '1992-12-20',
+      email: 'costumer3@email.com',
+      phone: '11977777777',
     },
   ]
 

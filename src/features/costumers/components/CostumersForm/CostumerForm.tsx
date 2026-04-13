@@ -3,10 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/shared/components/ui/field'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/components/ui/field'
 import { Input } from '@/shared/components/ui/input'
-import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from '@/shared/components/ui/input-group'
-import { Button } from '@/shared/components/ui/Button'
 
 const formSchema = z.object({
   title: z
@@ -66,42 +64,8 @@ export function CostumerForm() {
               </Field>
             )}
           />
-          <Controller
-            name="description"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="form-rhf-demo-description">Description</FieldLabel>
-                <InputGroup>
-                  <InputGroupTextarea
-                    {...field}
-                    id="form-rhf-demo-description"
-                    placeholder="I'm having an issue with the login button on mobile."
-                    rows={6}
-                    className="min-h-24 resize-none"
-                    aria-invalid={fieldState.invalid}
-                  />
-                  <InputGroupAddon align="block-end">
-                    <InputGroupText className="tabular-nums">{field.value.length}/100 characters</InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
-                <FieldDescription>
-                  Include steps to reproduce, expected behavior, and what actually happened.
-                </FieldDescription>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
         </FieldGroup>
       </form>
-      <Field orientation="horizontal">
-        <Button type="button" variant="outline" onClick={() => form.reset()}>
-          Reset
-        </Button>
-        <Button type="submit" form="form-rhf-demo">
-          Submit
-        </Button>
-      </Field>
     </>
   )
 }
